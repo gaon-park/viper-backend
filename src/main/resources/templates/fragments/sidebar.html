@@ -1,0 +1,108 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<div id="sidebar-left" class="enable-hover">
+    <!-- Sidebar Content -->
+    <div class="sidebar-content">
+        <!-- Search Form -->
+        <form action="page_ready_search_results.html" method="post" class="sidebar-search">
+            <input type="text" id="sidebar-search-term" name="sidebar-search-term" placeholder="Search..">
+        </form>
+        <!-- END Search Form -->
+
+        <div class="sidebar-left-scroll">
+            <ul class="sidebar-nav">
+                <li>
+                    <h2 class="sidebar-header">Welcome</h2>
+                </li>
+                <li>
+                    <a href="index.html"><i class="fa fa-coffee"></i>홈</a>
+                </li>
+                <li>
+                    <h2 class="sidebar-header">도구</h2>
+                </li>
+                <li>
+                    <a href="page_special_timeline.html"><i class="fa fa-clock-o"></i>달력</a>
+                </li>
+                <li>
+                    <a href="page_special_user_profile.html"><i class="fa fa-pencil-square"></i>할 일</a>
+                </li>
+                <li>
+                    <a href="page_special_login.html"><i class="fa fa-power-off"></i>Login &amp; Register</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- END Sidebar Content -->
+</div>
+<!-- END Left Sidebar -->
+
+<!-- Right Sidebar -->
+<div id="sidebar-right">
+    <!-- Sidebar Content -->
+    <div class="sidebar-content">
+        <!-- User Info -->
+        <div class="user-info">
+            <div class="user-details"><a href="page_special_user_profile.html">백에</a><br>
+                <em>바이퍼</em>
+            </div>
+            <img th:src="@{/img/template/avatar.png}" alt="Avatar">
+        </div>
+        <!-- END User Info -->
+
+        <div class="sidebar-right-scroll">
+            <!-- Color Themes -->
+            <div class="sidebar-section">
+                <h2 class="sidebar-header">Color Themes</h2>
+                <ul class="theme-colors clearfix">
+                    <li class="active">
+                        <a href="javascript:void(0)" class="themed-background-default themed-border-default"
+                           data-theme="default" data-toggle="tooltip" title="Default"></a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="themed-background-river themed-border-river"
+                           data-theme="css/themes/river.css" data-toggle="tooltip" title="River"></a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="themed-background-amethyst themed-border-amethyst"
+                           data-theme="css/themes/amethyst.css" data-toggle="tooltip" title="Amethyst"></a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="themed-background-dragon themed-border-dragon"
+                           data-theme="css/themes/dragon.css" data-toggle="tooltip" title="Dragon"></a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="themed-background-emerald themed-border-emerald"
+                           data-theme="css/themes/emerald.css" data-toggle="tooltip" title="Emerald"></a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="themed-background-grass themed-border-grass"
+                           data-theme="css/themes/grass.css" data-toggle="tooltip" title="Grass"></a>
+                    </li>
+                </ul>
+            </div>
+            <!-- END Color Themes -->
+
+            <!-- User Menu -->
+            <ul class="sidebar-nav">
+                <li>
+                    <h2 class="sidebar-header">내 정보</h2>
+                </li>
+                <li>
+                    <a href="page_special_timeline.html"><i class="fa fa-clock-o"></i>타임라인</a>
+                </li>
+                <li>
+                    <a href="page_special_user_profile.html"><i class="fa fa-pencil-square"></i>프로필</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><i class="fa fa-cog"></i>설정</a>
+                </li>
+                <li>
+                    <a href="page_special_login.html"><i class="fa fa-power-off"></i>로그아웃</a>
+                </li>
+            </ul>
+            <!-- END User Menu -->
+        </div>
+    </div>
+    <!-- END Sidebar Content -->
+</div>
+<!-- END Right Sidebar -->
+</html>
