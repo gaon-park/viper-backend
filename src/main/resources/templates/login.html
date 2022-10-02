@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{fragments/layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <script th:inline="javascript">
+        window.onload = function() {
+            /* Save buttons (remember me and terms) and hidden checkboxes in variables */
+            var checkR = $('#login-remember'),
+                checkT = $('#register-terms'),
+                btnR = $('#btn-remember'),
+                btnT = $('#btn-terms');
+
+            // Add the 'active' class to button if their checkbox has the property 'checked'
+            if (checkR.prop('checked'))
+                btnR.addClass('active');
+            if (checkT.prop('checked'))
+                btnT.addClass('active');
+
+            // Toggle 'checked' property of hidden checkboxes when buttons are clicked
+            btnR.on('click', function () {
+                checkR.prop('checked', !checkR.prop('checked'));
+            });
+            btnT.on('click', function () {
+                checkT.prop('checked', !checkT.prop('checked'));
+            });
+
+            /* Login & Register show-hide */
+            var formLogin = $('#form-login'),
+                formRegister = $('#form-register');
+
+            $('#link-login').click(function () {
+                formLogin.slideUp(250);
+                formRegister.slideDown(250);
+            });
+            $('#link-register').click(function () {
+                formRegister.slideUp(250);
+                formLogin.slideDown(250);
+            });
+        }
+
+
+
+
+
+
+
+    </script>
+</head>
+<div id="login-container" layout:fragment="content">
+    <!-- Page Content -->
+    <div class="block remove-margin" id="page-content">
+        <!-- Login Title -->
+        <div class="block-header">
+            <div class="header-section">
+                <h1 class="text-center">로그인</h1>
+                <h1 class="text-center">회원가입</h1>
+            </div>
+        </div>
+        <!-- END Login Title -->
+
+        <!-- Login Form -->
+        <form action="/login/auth" class="form-horizontal" id="form-login" method="post">
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <input class="form-control input-lg" id="login-email" name="login-email" placeholder="Email"
+                           type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <input class="form-control input-lg" id="login-password" name="login-password"
+                           placeholder="Password"
+                           type="password">
+                    <input hidden id="login-remember" name="login-remember" type="checkbox">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-8">
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-default disabled" type="button">로그인 상태를 유지할까요?</button>
+                        <button class="btn btn-sm btn-default" data-toggle="button" id="btn-remember" type="button">
+                            <i class="fa fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-xs-4 text-right">
+                    <button class="btn btn-sm btn-primary" type="submit">
+                        <i class="fa fa-angle-right"></i>
+                        로그인
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <p class="text-center remove-margin">
+                        <small>계정을 갖고 있지 않으신가요?</small>
+                        <a href="javascript:void(0)" id="link-login">
+                            <small>회원가입</small>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </form>
+        <!-- END Login Form -->
+
+        <!-- Register Form -->
+        <form action="/user/regist" class="form-horizontal display-none" id="form-register" method="post"
+              onsubmit="return false;">
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-user fa-fw"></i>
+                        </span>
+                        <input class="form-control input-lg" id="register-username" name="register-username"
+                               placeholder="Username"
+                               type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                        <input class="form-control input-lg" id="register-email" name="register-email"
+                               placeholder="Email"
+                               type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-asterisk fa-fw"></i></span>
+                        <input class="form-control input-lg" id="register-password" name="register-password"
+                               placeholder="Password" type="password">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-asterisk fa-fw"></i></span>
+                        <input class="form-control input-lg" id="register-password-verify"
+                               name="register-password-verify"
+                               placeholder="Verify Password" type="password">
+                    </div>
+                    <input hidden id="register-terms" name="register-terms" type="checkbox">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-8">
+                    <div class="btn-group">
+                        <a class="btn btn-sm btn-primary" data-toggle="modal" href="#modal-terms">Terms</a>
+                        <button class="btn btn-sm btn-default" data-toggle="button" id="btn-terms" type="button">
+                            <i class="fa fa-check"></i>동의
+                        </button>
+                    </div>
+                </div>
+                <div class="col-xs-4 text-right">
+                    <button class="btn btn-sm btn-success" type="submit">
+                        <i class="fa fa-angle-right"></i>
+                        등록
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <p class="text-center remove-margin">
+                        <small>이미 계정을 갖고 계신가요?</small>
+                        <a href="javascript:void(0)" id="link-register">
+                            <small>로그인</small>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </form>
+        <!-- END Register Form -->
+
+        <!-- Modal Terms -->
+        <div aria-hidden="true" class="modal" id="modal-terms" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" class="close" data-dismiss="modal" type="button">&times;</button>
+                        <h4 class="modal-title">Terms &amp; Conditions</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>개인정보 취급에 대하여</h4>
+                        <p>이용에 앞서 본 페이지는 개인이 관리하고 있음을 명시합니다.</p>
+                        <p>개인정보의 이용 목적</p>
+                        <p>본 페이지가 보유하는 개인정보를 다음과 같은 목적으로 이용합니다. 본 페이지는 본인의 동의를 얻지 않은 상태에서, 이 이용 목적 달성에 필요한 범위를 넘어서는 유저의
+                            개인 정보를 이용하지 않습니다.</p>
+                        <p>0. 로그인/회원가입을 위해</p>
+                        <p>1. 대표 캐릭터 정보 취득을 위해(메이플스토리 soap api)</p>
+                        <h4>개인 데이터의 이용</h4>
+                        <p>본 페이지가 보유하는 유저의 개인 데이터 중 다음 기재 내용의 개인 정보 항목을 공개하도록 하고 있습니다.</p>
+                        <p>0. 대표 캐릭터 정보</p>
+                        <p>1. 일정</p>
+                        <p>2. 업적 타임라인</p>
+                        <h4>개인 데이터의 제3자 제공</h4>
+                        <p>본 페이지가 보유하는 유저의 개인 데이터는 고객의 동의 없이 제3자에게 공개 및 제공하지 않습니다. 단, 다음과 같은 경우에 유저의 동의 없이 개인 데이터를 공개 및
+                            제공해야할 의무가 있음을 알립니다.</p>
+                        <p>법령 규정에 근거한 경우</p>
+                        <p>사람의 생명, 신체 또는 재산(법인 재산을 포함)의 보호를 위해 필요한 경우에 고객의 동의를 얻기 곤란할 때</p>
+                        <p>국가 기관 또는 지방공공단체 또는 그 위탁을 받은 자가 법령이 정하는 사무를 수행하기 위해 협력할 필요가 있는 경우, 고객의 동의를 얻음으로 당해 사무 수행에 지장을
+                            줄 우려가 있을 때</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Modal Terms -->
+    </div>
+    <!-- END Page Content -->
+</div>
+<!-- END Login Container -->
+</html>
