@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class ViperApplication
 
 fun main(args: Array<String>) {
-	runApplication<ViperApplication>(*args)
+    runApplication<ViperApplication>(args = args)
 }
