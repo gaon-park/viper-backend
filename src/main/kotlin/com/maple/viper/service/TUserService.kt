@@ -1,7 +1,7 @@
 package com.maple.viper.service
 
 import com.maple.viper.entity.TUser
-import com.maple.viper.exception.ViperException
+import com.maple.viper.exception.AlreadyExistException
 import com.maple.viper.form.UserRegistForm
 import com.maple.viper.repository.TUserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -16,8 +16,8 @@ class TUserService(
     @Transactional
     fun insert(form: UserRegistForm) {
         if (tUserRepository.findByEmail(form.email) != null) {
-            throw ViperException("already exist")
+            throw AlreadyExistException("already exist")
         }
-        tUserRepository.save(TUser.generateInsertModel(form.email, passwordEncoder.encode(form.password)))
+        tUserRepository.save(TUser.generateInsertModel(form, passwordEncoder))
     }
 }
