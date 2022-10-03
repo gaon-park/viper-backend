@@ -1,5 +1,6 @@
 package com.maple.viper.entity
 
+import com.maple.viper.form.UserRegistForm
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.core.userdetails.UserDetails
@@ -22,6 +23,13 @@ data class TUser(
 //    @Convert(converter = CryptoConverter::class)
     val pass: String,
 ) : UserDetails {
+    companion object {
+        fun generateInsertModel(form: UserRegistForm) = TUser(
+            email = form.email,
+            pass = form.password
+        )
+    }
+
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
         AuthorityUtils.createAuthorityList("USER")
 

@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html lang="en"
-      class="no-js"
-      xmlns:th="http://www.w3.org/1999/xhtml"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html class="no-js"
+      lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>viper</title>
     <meta charset="utf-8">
-    <meta name="description"
-          content="MapleStory tool set">
-    <meta name="author" content="gaon-park">
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+    <meta content="MapleStory tool set"
+          name="description">
+    <meta content="gaon-park" name="author">
+    <meta content="noindex, nofollow" name="robots">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1.0" name="viewport">
 
     <!-- Icons -->
     <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
     <link rel="shortcut icon" th:href="@{/img/favicon.ico}">
-    <link rel="apple-touch-icon" th:href="@{/img/icon57.png}" sizes="57x57">
-    <link rel="apple-touch-icon" th:href="@{/img/icon72.png}" sizes="72x72">
-    <link rel="apple-touch-icon" th:href="@{/img/icon76.png}" sizes="76x76">
-    <link rel="apple-touch-icon" th:href="@{/img/icon114.png}" sizes="114x114">
-    <link rel="apple-touch-icon" th:href="@{/img/icon120.png}" sizes="120x120">
-    <link rel="apple-touch-icon" th:href="@{/img/icon144.png}" sizes="144x144">
-    <link rel="apple-touch-icon" th:href="@{/img/icon152.png}" sizes="152x152">
+    <link rel="apple-touch-icon" sizes="57x57" th:href="@{/img/icon57.png}">
+    <link rel="apple-touch-icon" sizes="72x72" th:href="@{/img/icon72.png}">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/img/icon76.png}">
+    <link rel="apple-touch-icon" sizes="114x114" th:href="@{/img/icon114.png}">
+    <link rel="apple-touch-icon" sizes="120x120" th:href="@{/img/icon120.png}">
+    <link rel="apple-touch-icon" sizes="144x144" th:href="@{/img/icon144.png}">
+    <link rel="apple-touch-icon" sizes="152x152" th:href="@{/img/icon152.png}">
     <!-- END Icons -->
 
     <!-- Stylesheets -->
@@ -43,14 +43,16 @@
     <!-- Modernizr (Browser feature detection library) & Respond.js (Enable responsive CSS code on browsers that don't support it, eg IE8) -->
     <script th:src="@{js/vendor/modernizr-respond.min.js}"></script>
 </head>
-<!-- In the PHP version you can set the following options from the config file -->
-<!--
-    Add one of the following classes to the body element for the desirable feature:
-    'sidebar-left-pinned'                         for a left pinned sidebar (always visible > 1200px)
-    'sidebar-right-pinned'                        for a right pinned sidebar (always visible > 1200px)
-    'sidebar-left-pinned sidebar-right-pinned'    for both sidebars pinned (always visible > 1200px)
--->
-<body class="header-fixed-top sidebar-left-pinned">
+<body class="header-fixed-top sidebar-left-pinned sidebar-right-pinned">
+<!-- Include Jquery library from Google's CDN but if something goes wrong get Jquery from local file (Remove 'http:' if you have SSL) -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>!window.jQuery && document.write(decodeURI('%3Cscript src="js/vendor/jquery-1.11.1.min.js"%3E%3C/script%3E'));</script>
+
+<!-- Bootstrap.js, Jquery plugins and custom Javascript code -->
+<script th:src="@{/js/vendor/bootstrap.min.js}"></script>
+<script th:src="@{/js/plugins.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+
 <th:block th:replace="@{/fragments/sidebar}"></th:block>
 <div id="page-container">
     <header th:replace="@{/fragments/header}"></header>
@@ -60,16 +62,5 @@
 
 <!-- Scroll to top link, check main.js - scrollToTop() -->
 <a href="javascript:void(0)" id="to-top"><i class="fa fa-angle-up"></i></a>
-
-<!-- Include Jquery library from Google's CDN but if something goes wrong get Jquery from local file (Remove 'http:' if you have SSL) -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script>!window.jQuery && document.write(decodeURI('%3Cscript src="js/vendor/jquery-1.11.1.min.js"%3E%3C/script%3E'));
-
-</script>
-
-<!-- Bootstrap.js, Jquery plugins and custom Javascript code -->
-<script th:src="@{/js/vendor/bootstrap.min.js}"></script>
-<script th:src="@{/js/plugins.js}"></script>
-<script th:src="@{/js/main.js}"></script>
 </body>
 </html>

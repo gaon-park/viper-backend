@@ -34,7 +34,7 @@ class SecurityConfig(
             .loginPage("/login")
             .loginProcessingUrl("/login/auth")
             .failureUrl("/login?error=true")
-            .defaultSuccessUrl("/user/setting", true)
+            .defaultSuccessUrl("/", true)
             .usernameParameter("login-email")
             .passwordParameter("login-password")
 
@@ -64,7 +64,7 @@ class SecurityConfig(
 
     /**
      * DB 사용자 정보를 확인
-    함    */
+     */
     @Autowired
     fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(loginService)
