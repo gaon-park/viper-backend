@@ -67,6 +67,7 @@ class SecurityConfig(
      */
     @Autowired
     fun configure(auth: AuthenticationManagerBuilder) {
+        // todo session 저장 로그인 상태 확인 로직
         auth.userDetailsService(loginService)
     }
 }

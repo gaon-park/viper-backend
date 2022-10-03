@@ -39,6 +39,7 @@ class LoginController(
         if (bindingResult.hasErrors()) {
             return "redirect:/regist"
         }
+        // todo 중복확인
         tUserService.insert(form)
         return "redirect:/"
     }

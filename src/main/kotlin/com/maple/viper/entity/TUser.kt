@@ -1,6 +1,5 @@
 package com.maple.viper.entity
 
-import com.maple.viper.form.UserRegistForm
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.core.userdetails.UserDetails
@@ -17,16 +16,15 @@ data class TUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     val email: String,
     @Column(name = "password", nullable = false)
-//    @Convert(converter = CryptoConverter::class)
     val pass: String,
 ) : UserDetails {
     companion object {
-        fun generateInsertModel(form: UserRegistForm) = TUser(
-            email = form.email,
-            pass = form.password
+        fun generateInsertModel(email: String, pass: String) = TUser(
+            email = email,
+            pass = pass
         )
     }
 
