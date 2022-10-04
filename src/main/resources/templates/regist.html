@@ -19,15 +19,16 @@
 
         <!-- Register Form -->
         <form class="form-horizontal" id="form-validation" method="post" th:action="@{/regist}" th:object="${form}">
-            <!--            <div class="form-group">-->
-            <!--                <label class="col-md-2 control-label" for="val_username">Username</label>-->
-            <!--                <div class="col-md-3">-->
-            <!--                    <div class="input-group">-->
-            <!--                        <input type="text" id="val_username" name="val_username" class="form-control">-->
-            <!--                        <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
+            <span th:if="${not #strings.isEmpty(error)}" th:text="${error}"></span>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="accountId">메이플 계정 ID</label>
+                <div class="col-lg">
+                    <div class="input-group">
+                        <input type="text" id="accountId" name="accountId" th:field="*{accountId}" class="form-control">
+                        <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <label class="col-md-3 control-label" for="email">이메일</label>
                 <div class="col-lg">

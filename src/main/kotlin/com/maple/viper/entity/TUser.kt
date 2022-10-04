@@ -1,8 +1,11 @@
 package com.maple.viper.entity
 
+import com.maple.viper.form.UserRegistForm
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.crypto.password.PasswordEncoder
+import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -16,15 +19,24 @@ data class TUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+    @Column(name = "account_id", nullable = false)
+    val accountId: Int,
     @Column(name = "email", nullable = false, unique = true)
     val email: String,
     @Column(name = "password", nullable = false)
     val pass: String,
+    @Column(name = "created_at")
+    val createdAt: LocalDateTime,
+    @Column(name = "updated_at")
+    val updatedAt: LocalDateTime,
 ) : UserDetails {
     companion object {
-        fun generateInsertModel(email: String, pass: String) = TUser(
-            email = email,
-            pass = pass
+        fun generateInsertModel(form: UserRegistForm, passwordEncoder: PasswordEncoder) = TUser(
+            accountId = form.accountId ?: 0,
+            email = form.email,
+            pass = passwordEncoder.encode(form.password),
+            createdAt = LocalDateTime.now(),
+            updatedAt = LocalDateTime.now()
         )
     }
 

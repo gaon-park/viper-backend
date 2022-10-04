@@ -3,7 +3,7 @@ package com.maple.viper.view
 import com.fasterxml.jackson.module.kotlin.jsonMapper
 import com.maple.viper.exception.AlreadyExistException
 import com.maple.viper.form.UserRegistForm
-import com.maple.viper.service.TUserService
+import com.maple.viper.service.IndexService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
@@ -15,7 +15,7 @@ import javax.validation.Valid
 @Controller
 @Suppress("FunctionOnlyReturningConstant")
 class LoginController(
-    private val tUserService: TUserService
+    private val indexService: IndexService
 ) {
 
     @GetMapping("/login")
@@ -38,30 +38,28 @@ class LoginController(
     @PostMapping("/regist")
     fun regist(
         @Valid form: UserRegistForm, bindingResult: BindingResult, redirectAttributes: RedirectAttributes
-    ): String {
-        return when {
-            bindingResult.hasErrors() -> {
-                redirectAttributes.addFlashAttribute(
-                    "error",
-                    bindingResult.fieldErrors.map { it.defaultMessage }.joinToString { "<br>" })
+    ): String = when {
+        bindingResult.hasErrors() -> {
+            redirectAttributes.addFlashAttribute(
+                "error",
+                bindingResult.fieldErrors.map { it.defaultMessage }.joinToString { "<br>" })
+            redirectAttributes.addFlashAttribute(
+                "form",
+                jsonMapper().writeValueAsString(form)
+            )
+            "redirect:/regist"
+        }
+        else -> {
+            try {
+                indexService.insert(form)
+                "redirect:/"
+            } catch (e: AlreadyExistException) {
+                redirectAttributes.addFlashAttribute("error", "이미 등록되어있는 이메일입니다.")
                 redirectAttributes.addFlashAttribute(
                     "form",
                     jsonMapper().writeValueAsString(form)
                 )
                 "redirect:/regist"
-            }
-            else -> {
-                try {
-                    tUserService.insert(form)
-                    "redirect:/"
-                } catch (e: AlreadyExistException) {
-                    redirectAttributes.addFlashAttribute("error", "이미 등록되어있는 이메일입니다.")
-                    redirectAttributes.addFlashAttribute(
-                        "form",
-                        jsonMapper().writeValueAsString(form)
-                    )
-                    "redirect:/regist"
-                }
             }
         }
     }
