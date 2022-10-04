@@ -7,5 +7,7 @@ import org.springframework.stereotype.Repository
 @Suppress("EmptyClassBlock")
 @Repository
 interface TCharacterRepository : JpaRepository<TCharacter, Long> {
-    fun findByUserIdAndName(userId: Long, name: String): TCharacter?
+    fun findByUserId(userId: Long): List<TCharacter>
+    fun findByUserIdIn(userIds: List<Long>): List<TCharacter>
+    fun findByUserIdAndRepresentativeFlg(userId: Long, representativeFlg: Boolean): TCharacter?
 }

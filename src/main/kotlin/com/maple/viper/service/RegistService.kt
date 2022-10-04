@@ -3,6 +3,7 @@ package com.maple.viper.service
 import com.maple.viper.entity.TAvatarImgUrl
 import com.maple.viper.entity.TCharacter
 import com.maple.viper.entity.TExp
+import com.maple.viper.entity.TPop
 import com.maple.viper.entity.TTotalRank
 import com.maple.viper.entity.TUser
 import com.maple.viper.entity.TWorldRank
@@ -12,6 +13,7 @@ import com.maple.viper.form.UserRegistForm
 import com.maple.viper.repository.TAvatarImgUrlRepository
 import com.maple.viper.repository.TCharacterRepository
 import com.maple.viper.repository.TExpRepository
+import com.maple.viper.repository.TPopRepository
 import com.maple.viper.repository.TTotalRankRepository
 import com.maple.viper.repository.TUserRepository
 import com.maple.viper.repository.TWorldRankRepository
@@ -33,7 +35,8 @@ class RegistService(
     private val tWorldRankRepository: TWorldRankRepository,
     private val tTotalRankRepository: TTotalRankRepository,
     private val tExpRepository: TExpRepository,
-    private val tAvatarImgUrlRepository: TAvatarImgUrlRepository
+    private val tAvatarImgUrlRepository: TAvatarImgUrlRepository,
+    private val tPopRepository: TPopRepository,
 ) {
     /**
      * 유저 등록 후, 대표캐릭터 정보 검색/등록
@@ -58,11 +61,18 @@ class RegistService(
             val tCharacter = TCharacter.generateInsertModel(
                 tUser.id ?: throw ViperException("invalid data"), characterInfo
             )
+            // 다른 캐릭터를 대표캐릭터로 등록했다가, 변경한 경우
+            val already = tCharacterRepository.findByUserId(tUser.id)
+            if (already.isNotEmpty()) {
+                tCharacterRepository.saveAll(already.map { it.copy(representativeFlg = false) })
+            }
+
             tCharacterRepository.save(tCharacter).id?.let { characterId ->
                 tWorldRankRepository.save(TWorldRank.generateInsertModel(characterId, characterInfo.worldRank))
                 tTotalRankRepository.save(TTotalRank.generateInsertModel(characterId, characterInfo.totRank))
                 tExpRepository.save(TExp.generateInsertModel(characterId, characterInfo.lev, characterInfo.exp))
                 tAvatarImgUrlRepository.save(TAvatarImgUrl.generateInsertModel(characterId, characterInfo.avatarImgURL))
+                tPopRepository.save(TPop.generateInsertModel(characterId, characterInfo.pop))
             }
             return true
         }
