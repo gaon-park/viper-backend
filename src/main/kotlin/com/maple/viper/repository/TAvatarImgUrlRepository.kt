@@ -10,4 +10,5 @@ import javax.transaction.Transactional
 interface TAvatarImgUrlRepository : JpaRepository<TAvatarImgUrl, Long> {
     @Transactional
     fun deleteByCreatedAt(createdAt: LocalDate)
+    fun findFirstByCharacterIdOrderByCreatedAtDesc(characterId: Long): TAvatarImgUrl?
 }

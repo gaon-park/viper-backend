@@ -10,4 +10,5 @@ import javax.transaction.Transactional
 interface TExpRepository : JpaRepository<TExp, Long> {
     @Transactional
     fun deleteByCreatedAt(createdAt: LocalDate)
+    fun findFirstByCharacterIdOrderByCreatedAtDesc(characterId: Long): TExp?
 }

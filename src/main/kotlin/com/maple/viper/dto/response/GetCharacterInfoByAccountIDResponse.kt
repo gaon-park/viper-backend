@@ -1,6 +1,8 @@
 package com.maple.viper.dto.response
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.maple.viper.entity.TCharacter
+import com.maple.viper.entity.TExp
 import lombok.AllArgsConstructor
 import lombok.Builder
 import lombok.NoArgsConstructor
@@ -29,4 +31,20 @@ data class GetCharacterInfoByAccountIDResponse(
     val totRank: Long,
     @JsonProperty("WorldRank")
     val worldRank: Long,
-)
+) {
+    companion object {
+        fun generate(character: TCharacter, avatarImgURL: String?, exp: TExp?, totRank: Long?, worldRank: Long?, pop: Int?) =
+            GetCharacterInfoByAccountIDResponse(
+                avatarImgURL = avatarImgURL ?: "",
+                worldName = character.worldName,
+                characterName = character.name,
+                lev = exp?.lev ?: 0,
+                exp = exp?.exp ?: 0,
+                job = character.job,
+                jobDetail = character.jobDetail,
+                pop = pop ?: 0,
+                totRank = totRank ?: 0,
+                worldRank = worldRank ?: 0
+            )
+    }
+}

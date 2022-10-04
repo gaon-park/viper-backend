@@ -10,4 +10,5 @@ import javax.transaction.Transactional
 interface TWorldRankRepository : JpaRepository<TWorldRank, Long> {
     @Transactional
     fun deleteByCreatedAt(createdAt: LocalDate)
+    fun findFirstByCharacterIdOrderByCreatedAtDesc(characterId: Long): TWorldRank?
 }
