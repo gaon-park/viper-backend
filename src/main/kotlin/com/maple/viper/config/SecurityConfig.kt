@@ -12,38 +12,32 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val loginService: LoginService
+    private val loginService: LoginService,
+    private val jwtTokenProvider: JwtTokenProvider
 ) {
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/user", "/user/**")
-            .authenticated()
+            .httpBasic()
+                // todo 프론트엔드 서버 분리 후 주석 제거
+//            .and()
+//            .authorizeRequests() // 요청에 대한 권한 체크
+//            .antMatchers("/user", "/user/**").hasRole("USER")
+//            .anyRequest().permitAll() // 그 외 나머지 요청은 누구나 접근 가능
+            .and()
+            .addFilterBefore(JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java)
 
         // 로그인
         http
             .formLogin()
             .loginPage("/login")
-            .loginProcessingUrl("/login/auth")
-            .failureUrl("/login?error=true")
-            .defaultSuccessUrl("/", true)
-            .usernameParameter("login-email")
-            .passwordParameter("login-password")
-
-        // 로그아웃
-        http
-            .logout()
-            .logoutRequestMatcher(AntPathRequestMatcher("/logout"))
-            .logoutSuccessUrl("/")
-            .invalidateHttpSession(true)
 
         return http.build()
     }

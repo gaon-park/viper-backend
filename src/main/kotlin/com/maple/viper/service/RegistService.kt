@@ -26,7 +26,7 @@ import javax.transaction.Transactional
  */
 @Service
 @Suppress("LongParameterList")
-class IndexService(
+class RegistService(
     private val passwordEncoder: PasswordEncoder,
     private val tUserRepository: TUserRepository,
     private val tCharacterRepository: TCharacterRepository,
