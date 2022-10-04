@@ -1,5 +1,6 @@
 package com.maple.viper.service
 
+import com.maple.viper.entity.TAvatarImgUrl
 import com.maple.viper.entity.TCharacter
 import com.maple.viper.entity.TExp
 import com.maple.viper.entity.TTotalRank
@@ -8,6 +9,7 @@ import com.maple.viper.entity.TWorldRank
 import com.maple.viper.exception.AlreadyExistException
 import com.maple.viper.exception.ViperException
 import com.maple.viper.form.UserRegistForm
+import com.maple.viper.repository.TAvatarImgUrlRepository
 import com.maple.viper.repository.TCharacterRepository
 import com.maple.viper.repository.TExpRepository
 import com.maple.viper.repository.TTotalRankRepository
@@ -23,6 +25,7 @@ import javax.transaction.Transactional
  * 데이터베이스 전반 등록 로직
  */
 @Service
+@Suppress("LongParameterList")
 class IndexService(
     private val passwordEncoder: PasswordEncoder,
     private val tUserRepository: TUserRepository,
@@ -30,6 +33,7 @@ class IndexService(
     private val tWorldRankRepository: TWorldRankRepository,
     private val tTotalRankRepository: TTotalRankRepository,
     private val tExpRepository: TExpRepository,
+    private val tAvatarImgUrlRepository: TAvatarImgUrlRepository
 ) {
     /**
      * 유저 등록 후, 대표캐릭터 정보 검색/등록
@@ -58,6 +62,7 @@ class IndexService(
                 tWorldRankRepository.save(TWorldRank.generateInsertModel(characterId, characterInfo.worldRank))
                 tTotalRankRepository.save(TTotalRank.generateInsertModel(characterId, characterInfo.totRank))
                 tExpRepository.save(TExp.generateInsertModel(characterId, characterInfo.lev, characterInfo.exp))
+                tAvatarImgUrlRepository.save(TAvatarImgUrl.generateInsertModel(characterId, characterInfo.avatarImgURL))
             }
             return true
         }
