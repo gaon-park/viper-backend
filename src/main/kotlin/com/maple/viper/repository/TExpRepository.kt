@@ -14,7 +14,8 @@ interface TExpRepository : JpaRepository<TExp, Long> {
     fun deleteByCreatedAt(createdAt: LocalDate)
     fun findFirstByCharacterIdOrderByCreatedAtDesc(characterId: Long): TExp?
 
-    @Query(value = "select t from TExp t where character_id = :characterId and created_at >= :startDate and created_at <= :endDate")
+    @Query(value =
+    "select t from TExp t where character_id = :characterId and created_at >= :startDate and created_at <= :endDate")
     fun findByCharacterIdAndCreatedAtBetween(
         @Param("characterId") characterId: Long,
         @Param("startDate") start: LocalDate,

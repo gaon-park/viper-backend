@@ -37,7 +37,10 @@ class AnalyzeExpService(
             if (earnedExp == (0).toDouble()) {
                 return LocalDate.MAX
             } else {
-                val avgExp: Double = (earnedExp - getPortionExp(portionMap)) / (ChronoUnit.DAYS.between(analyzeStartDate, analyzeEndDate) + 1)
+                val avgExp: Double = (earnedExp - getPortionExp(portionMap)) / (ChronoUnit.DAYS.between(
+                    analyzeStartDate,
+                    analyzeEndDate
+                ) + 1)
                 val remainExp = getRemainExp(tExps.first(), targetLev ?: LEV_MAX)
                 val remainDays = remainExp / avgExp
 

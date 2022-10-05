@@ -1,4 +1,4 @@
-insert into t_exp_mst (lev_section, exp, rate_of_increase) value
+insert into t_exp_mst (target_lev, exp, rate_of_increase) value
 (1, 0, 0),
 (2, 15, 0),
 (3, 34, 126.67),

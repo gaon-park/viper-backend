@@ -40,6 +40,9 @@ class BatchService(
     val logger: Logger = LoggerFactory.getLogger(this.javaClass.simpleName)
 
     fun update() {
+        logger.info("오늘 날짜로 집계된 데이터를 삭제")
+        deleteData()
+
         logger.info("DB 검색")
         val users = tUserRepository.findAll().filterNotNull()
 
@@ -48,51 +51,49 @@ class BatchService(
         val soapUtil = SoapUtil()
         val characterInfos =
             users.associate {
-                it.id to jsonUtil.getDataFromNexonJson(
+                (it.id ?: throw ViperException("invalid data")) to jsonUtil.getDataFromNexonJson(
                     soapUtil.getCharacterInfoByAccountID(it.accountId)
                 )
             }
 
-        // 등록된 대표캐릭터
-        val savedCharacters =
-            tCharacterRepository.findByUserIdIn(users.mapNotNull { it.id }).filter { it.representativeFlg }
-
-        // 등록된 캐릭터가 동일한 경우
-        val sameCharacters = savedCharacters.filter { it.name == characterInfos[it.userId]?.characterName }
-            .associateBy { it.userId }
-
-        // 등록된 캐릭터가 동일하지 않은 경우(대표캐릭터 변경)
-        val diffCharacters = savedCharacters.filter { it.name != characterInfos[it.userId]?.characterName }
-        if (diffCharacters.isNotEmpty()) {
-            logger.info("대표캐릭터가 변경되어 기존 캐릭터의 representativeFlg 를 False 로 갱신")
-            upsertCharacter(diffCharacters.map { it.copy(representativeFlg = false) })
+        val insertData = mutableMapOf<Long, GetCharacterInfoByAccountIDResponse>()
+        characterInfos.map {
+            val characterId =
+                upsertCharactersByUserId(it.key, it.value) ?: throw ViperException("failed insert t_character")
+            insertData[characterId] = it.value
         }
 
-        // 대표 캐릭터가 새로 등록된 경우(신규 등록)
-        val unSaved = characterInfos.filter { sameCharacters[it.key] == null }
-            .mapNotNull { it.key?.let { it1 -> TCharacter.generateInsertModel(it1, it.value) } }
-
-        val data = with(unSaved) {
-            if (unSaved.isNotEmpty()) {
-                logger.info("등록되어있지 않은 캐릭터 등록")
-                sameCharacters.plus(upsertCharacter(unSaved))
-            } else {
-                sameCharacters
-            }
-        }.mapNotNull {
-            (it.value.id ?: throw ViperException("invalid data")) to (characterInfos[it.key]
-                ?: throw ViperException("invalid data"))
-        }.toMap()
-
-        logger.info("오늘 날짜로 집계된 데이터를 삭제")
-        deleteData()
         logger.info("최신 데이터를 등록")
-        insertData(data)
+        insertData(insertData)
+    }
+
+    fun upsertCharactersByUserId(userId: Long, characterInfo: GetCharacterInfoByAccountIDResponse): Long? {
+        logger.info("userId[${userId}] 기존 데이터 갱신")
+        val savedList = tCharacterRepository.findByUserId(userId)
+        val upsertList = mutableListOf<TCharacter>()
+        savedList.firstOrNull { it.name == characterInfo.characterName }?.let {
+            upsertList.add(it.copy(representativeFlg = true))
+        }
+        savedList.filter { it.name != characterInfo.characterName }.map {
+            upsertList.add(it.copy(representativeFlg = false))
+        }
+
+        return if (savedList.any { it.name == characterInfo.characterName }) {
+            upsertCharacter(upsertList).firstOrNull { it.name == characterInfo.characterName }?.id
+        } else {
+            logger.info("userId[${userId}]에 신규 대표캐릭터를 등록")
+            insertCharacter(TCharacter.generateInsertModel(userId, characterInfo)).id
+        }
     }
 
     @Transactional
-    fun upsertCharacter(data: List<TCharacter>): Map<Long, TCharacter> {
-        return tCharacterRepository.saveAll(data).associateBy { it.userId }
+    fun insertCharacter(data: TCharacter): TCharacter {
+        return tCharacterRepository.save(data)
+    }
+
+    @Transactional
+    fun upsertCharacter(data: List<TCharacter>): List<TCharacter> {
+        return tCharacterRepository.saveAll(data)
     }
 
     @Transactional

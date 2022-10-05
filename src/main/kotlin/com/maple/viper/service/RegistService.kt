@@ -72,16 +72,28 @@ class RegistService(
             )
             // 다른 캐릭터를 대표캐릭터로 등록했다가, 변경한 경우
             val already = tCharacterRepository.findByUserId(tUser.id)
+            val characterId: Long?
             if (already.isNotEmpty()) {
-                tCharacterRepository.saveAll(already.map { it.copy(representativeFlg = false) })
+                // 변경한 대표캐릭터가 등록했던 캐릭터인 경우
+                val alreadyC = already.firstOrNull { it.name == characterInfo.characterName }
+                val updateChars = already.filter { it.name != characterInfo.characterName }
+                characterId = if (alreadyC != null) {
+                    tCharacterRepository.save(alreadyC.copy(representativeFlg = true))
+                    alreadyC.id
+                } else {
+                    tCharacterRepository.save(tCharacter).id
+                }
+                tCharacterRepository.saveAll(updateChars.map { it.copy(representativeFlg = false) })
+            } else {
+                characterId = tCharacterRepository.save(tCharacter).id
             }
 
-            tCharacterRepository.save(tCharacter).id?.let { characterId ->
-                tWorldRankRepository.save(TWorldRank.generateInsertModel(characterId, characterInfo.worldRank))
-                tTotalRankRepository.save(TTotalRank.generateInsertModel(characterId, characterInfo.totRank))
-                tExpRepository.save(TExp.generateInsertModel(characterId, characterInfo.lev, characterInfo.exp))
-                tAvatarImgUrlRepository.save(TAvatarImgUrl.generateInsertModel(characterId, characterInfo.avatarImgURL))
-                tPopRepository.save(TPop.generateInsertModel(characterId, characterInfo.pop))
+            characterId?.let { id ->
+                tWorldRankRepository.save(TWorldRank.generateInsertModel(id, characterInfo.worldRank))
+                tTotalRankRepository.save(TTotalRank.generateInsertModel(id, characterInfo.totRank))
+                tExpRepository.save(TExp.generateInsertModel(id, characterInfo.lev, characterInfo.exp))
+                tAvatarImgUrlRepository.save(TAvatarImgUrl.generateInsertModel(id, characterInfo.avatarImgURL))
+                tPopRepository.save(TPop.generateInsertModel(id, characterInfo.pop))
             }
             return true
         }
