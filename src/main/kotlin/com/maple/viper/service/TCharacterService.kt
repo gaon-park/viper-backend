@@ -1,7 +1,7 @@
 package com.maple.viper.service
 
 import com.maple.viper.dto.response.GetCharacterInfoByAccountIDResponse
-import com.maple.viper.exception.ViperException
+import com.maple.viper.exception.NotFountException
 import com.maple.viper.repository.TAvatarImgUrlRepository
 import com.maple.viper.repository.TCharacterRepository
 import com.maple.viper.repository.TExpRepository
@@ -40,6 +40,6 @@ class TCharacterService(
                 )
             }
         }
-        throw ViperException("does not exist")
+        throw NotFountException("does not exist character by userId [${userId}]")
     }
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController
-class LoginController(
+class AccountController(
     private val registService: RegistService,
     private val loginService: LoginService,
     private val passwordEncoder: PasswordEncoder,
@@ -23,11 +23,12 @@ class LoginController(
 ) {
 
     /**
-     * 최초 로그인. JWT Token 발행
+     * 최초 로그인. JWT TOKEN 발행
      */
     @PostMapping("/login")
     fun login(
-        @Valid @RequestBody request: LoginRequest
+        @Valid @RequestBody request: LoginRequest,
+        message: String?,
     ): ResponseEntity<LoginResponse> = with(loginService.loadUserByUsername(request.email)) {
         if (this == null) {
             throw InvalidRequestException("존재하지 않는 계정")
@@ -39,22 +40,27 @@ class LoginController(
                     jwtTokenProvider.createToken(
                         this.username,
                         listOf("ROLE_USER")
-                    )
+                    ), message
                 )
             )
         }
     }
 
+    /**
+     * 가입 후, 로그인. JWT TOKEN 발행
+     */
     @PostMapping("/regist")
     fun regist(
         @Valid @RequestBody request: UserRegistRequest
-    ): ResponseEntity<Any> {
-        val map = HashMap<String, String>()
-        if (registService.insert(request)) {
-            map["message"] = "회원가입/대표캐릭터 정보 저장 성공"
+    ): ResponseEntity<LoginResponse> {
+        val message = if (registService.insert(request)) {
+            null
         } else {
-            map["message"] = "회원가입을 완료하였으나, 대표캐릭터 정보를 불러오는 데에 실패"
+            "회원가입을 완료하였으나, 대표캐릭터 정보를 불러오는 데에 실패"
         }
-        return ResponseEntity.ok(map)
+        return login(
+            LoginRequest(request.email, request.password),
+            message
+        )
     }
 }

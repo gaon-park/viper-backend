@@ -25,6 +25,8 @@ class SecurityConfig(
             .and()
             .authorizeRequests() // 요청에 대한 권한 체크
             .antMatchers("/user", "/user/**").hasRole("USER")
+            // todo admin 로직 생성 후 주석 제거
+//            .antMatchers("/batch", "/batch/**").hasRole("ADMIN")
             .anyRequest().permitAll() // 그 외 나머지 요청은 누구나 접근 가능
             .and()
             .addFilterBefore(
