@@ -14,12 +14,13 @@ import javax.servlet.http.HttpServletRequest
 class JwtTokenProvider(
     private val userDetailsService: UserDetailsService
 ) {
-    private var secretKey: Key = Keys.hmacShaKeyFor("Zr4u7x!A%D*F-JaNdRgUkXp2s5v8y/B?".toByteArray())
-
-    /**
-     * 토큰 유효시간 30분
-     */
-    private val tokenValidTime = 30 * 60 * 1000L
+    companion object {
+        private var secretKey: Key = Keys.hmacShaKeyFor("Zr4u7x!A%D*F-JaNdRgUkXp2s5v8y/B?".toByteArray())
+        /**
+         * 토큰 유효시간 30분
+         */
+        private const val tokenValidTime = 30 * 60 * 1000L
+    }
 
     /**
      * JWT 토큰 생성

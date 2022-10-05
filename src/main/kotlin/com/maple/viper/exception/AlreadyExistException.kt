@@ -1,3 +1,3 @@
 package com.maple.viper.exception
 
-class AlreadyExistException(val msg: String) : Exception(msg)
+class AlreadyExistException(private val msg: String) : InvalidRequestException(msg)

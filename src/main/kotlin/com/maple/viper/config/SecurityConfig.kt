@@ -1,11 +1,8 @@
 package com.maple.viper.config
 
-import com.maple.viper.service.LoginService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -17,7 +14,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val loginService: LoginService,
     private val jwtTokenProvider: JwtTokenProvider
 ) {
 
@@ -26,18 +22,15 @@ class SecurityConfig(
         http
             .csrf().disable()
             .httpBasic()
-                // todo 프론트엔드 서버 분리 후 주석 제거
-//            .and()
-//            .authorizeRequests() // 요청에 대한 권한 체크
-//            .antMatchers("/user", "/user/**").hasRole("USER")
-//            .anyRequest().permitAll() // 그 외 나머지 요청은 누구나 접근 가능
             .and()
-            .addFilterBefore(JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java)
-
-        // 로그인
-        http
-            .formLogin()
-            .loginPage("/login")
+            .authorizeRequests() // 요청에 대한 권한 체크
+            .antMatchers("/user", "/user/**").hasRole("USER")
+            .anyRequest().permitAll() // 그 외 나머지 요청은 누구나 접근 가능
+            .and()
+            .addFilterBefore(
+                JwtAuthenticationFilter(jwtTokenProvider),
+                UsernamePasswordAuthenticationFilter::class.java
+            )
 
         return http.build()
     }
@@ -54,14 +47,5 @@ class SecurityConfig(
     @Bean
     fun getPasswordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
-    }
-
-    /**
-     * DB 사용자 정보를 확인
-     */
-    @Autowired
-    fun configure(auth: AuthenticationManagerBuilder) {
-        // todo session 저장 로그인 상태 확인 로직
-        auth.userDetailsService(loginService)
     }
 }

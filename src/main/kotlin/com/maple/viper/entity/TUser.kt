@@ -1,5 +1,6 @@
 package com.maple.viper.entity
 
+import com.maple.viper.dto.request.UserRegistRequest
 import com.maple.viper.form.UserRegistForm
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
@@ -35,6 +36,14 @@ data class TUser(
             accountId = form.accountId ?: 0,
             email = form.email,
             pass = passwordEncoder.encode(form.password),
+            createdAt = LocalDateTime.now(),
+            updatedAt = LocalDateTime.now()
+        )
+
+        fun generateInsertModel(request: UserRegistRequest, passwordEncoder: PasswordEncoder) = TUser(
+            accountId = request.accountId,
+            email = request.email,
+            pass = passwordEncoder.encode(request.password),
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
         )

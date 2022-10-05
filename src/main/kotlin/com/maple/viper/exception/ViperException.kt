@@ -1,3 +1,3 @@
 package com.maple.viper.exception
 
-class ViperException(val msg: String) : Exception(msg)
+class ViperException(private val msg: String) : Exception(msg)

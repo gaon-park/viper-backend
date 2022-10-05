@@ -1,5 +1,6 @@
 package com.maple.viper.service
 
+import com.maple.viper.dto.request.UserRegistRequest
 import com.maple.viper.entity.TAvatarImgUrl
 import com.maple.viper.entity.TCharacter
 import com.maple.viper.entity.TExp
@@ -48,6 +49,14 @@ class RegistService(
             throw AlreadyExistException("already exist")
         }
         return insertCharacterInfo(tUserRepository.save(TUser.generateInsertModel(form, passwordEncoder)))
+    }
+
+    @Transactional
+    fun insert(request: UserRegistRequest): Boolean {
+        if (tUserRepository.findByEmail(request.email) != null) {
+            throw AlreadyExistException("already exist email [${request.email}]")
+        }
+        return insertCharacterInfo(tUserRepository.save(TUser.generateInsertModel(request, passwordEncoder)))
     }
 
     /**

@@ -27,6 +27,7 @@ import javax.transaction.Transactional
  * BatchAPI - Service
  */
 @Service
+@Suppress("LongParameterList")
 class BatchService(
     private val tUserRepository: TUserRepository,
     private val tCharacterRepository: TCharacterRepository,

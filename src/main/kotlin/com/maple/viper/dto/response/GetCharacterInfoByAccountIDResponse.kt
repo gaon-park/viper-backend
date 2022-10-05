@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Suppress("LongParameterList")
 data class GetCharacterInfoByAccountIDResponse(
     @JsonProperty("AvatarImgURL")
     val avatarImgURL: String,
@@ -33,7 +34,13 @@ data class GetCharacterInfoByAccountIDResponse(
     val worldRank: Long,
 ) {
     companion object {
-        fun generate(character: TCharacter, avatarImgURL: String?, exp: TExp?, totRank: Long?, worldRank: Long?, pop: Int?) =
+        fun generate(
+            character: TCharacter,
+            avatarImgURL: String?,
+            exp: TExp?,
+            totRank: Long?,
+            worldRank: Long?,
+            pop: Int?) =
             GetCharacterInfoByAccountIDResponse(
                 avatarImgURL = avatarImgURL ?: "",
                 worldName = character.worldName,
