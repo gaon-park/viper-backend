@@ -1,6 +1,6 @@
 package com.maple.viper.service
 
-import com.maple.viper.dto.response.GetCharacterInfoByAccountIDResponse
+import com.maple.viper.dto.response.CharacterInfoResponse
 import com.maple.viper.exception.NotFountException
 import com.maple.viper.repository.TAvatarImgUrlRepository
 import com.maple.viper.repository.TCharacterRepository
@@ -19,7 +19,7 @@ class TCharacterService(
     private val tTotalRankRepository: TTotalRankRepository,
     private val tWorldRankRepository: TWorldRankRepository,
 ) {
-    fun getCharacterInfo(userId: Long): GetCharacterInfoByAccountIDResponse {
+    fun getCharacterInfo(userId: Long): CharacterInfoResponse {
         tCharacterRepository.findByUserIdAndRepresentativeFlg(userId, true)?.let {
             val character = it
             it.id?.let { characterId ->
@@ -30,7 +30,7 @@ class TCharacterService(
                 val totalRank = tTotalRankRepository.findFirstByCharacterIdOrderByCreatedAtDesc(characterId)?.ranking
                 val worldRank = tWorldRankRepository.findFirstByCharacterIdOrderByCreatedAtDesc(characterId)?.ranking
 
-                return GetCharacterInfoByAccountIDResponse.generate(
+                return CharacterInfoResponse.generate(
                     character = character,
                     avatarImgURL = avatarImgUrl,
                     exp = exp,
