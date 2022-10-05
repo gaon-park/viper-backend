@@ -13,7 +13,7 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 @Service
-class AnalyzeService(
+class AnalyzeExpService(
     private val tCharacterRepository: TCharacterRepository,
     private val tExpMstRepository: TExpMstRepository,
     private val tExpRepository: TExpRepository
@@ -21,10 +21,14 @@ class AnalyzeService(
     companion object {
         private const val LEV_MAX = 300
     }
+
     private val expMst: Map<Int, TExpMst> by lazy {
         tExpMstRepository.findAll().associateBy { it.targetLev }
     }
 
+    /**
+     * currentLev -> targetLev 달성일 계산
+     */
     fun analyzeExp(
         userId: Long, startDate: LocalDate?, endDate: LocalDate?, targetLev: Int?, portionMap: Map<ExpPortionInfo, Int>
     ): LocalDate {
@@ -58,6 +62,9 @@ class AnalyzeService(
         } ?: throw NotFountException("캐릭터를 찾지 못했습니다.")
     }
 
+    /**
+     * targetLev 까지 남은 경험치 계산
+     */
     fun getRemainExp(
         currentTExp: TExp,
         targetLev: Int,
@@ -70,6 +77,9 @@ class AnalyzeService(
         return remainExp - BigDecimal.valueOf(currentTExp.exp)
     }
 
+    /**
+     * 비약으로 얻은 경험치 총합
+     */
     fun getPortionExp(
         portionMap: Map<ExpPortionInfo, Int>
     ): BigDecimal {

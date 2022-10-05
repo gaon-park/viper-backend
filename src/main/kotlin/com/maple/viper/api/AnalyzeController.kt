@@ -1,7 +1,7 @@
 package com.maple.viper.api
 
 import com.maple.viper.dto.response.AnalyzeExpResponse
-import com.maple.viper.service.AnalyzeService
+import com.maple.viper.service.AnalyzeExpService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -12,11 +12,11 @@ import java.time.LocalDate
 @RestController
 @RequestMapping("/analyze")
 class AnalyzeController(
-    private val analyzeService: AnalyzeService
+    private val analyzeExpService: AnalyzeExpService
 ) {
     @GetMapping("/exp")
     fun analyzeExp(@RequestParam userId: Long): ResponseEntity<AnalyzeExpResponse> {
-        val completionDate = analyzeService.analyzeExp(
+        val completionDate = analyzeExpService.analyzeExp(
             userId = userId,
             startDate = null,
             endDate = null,
