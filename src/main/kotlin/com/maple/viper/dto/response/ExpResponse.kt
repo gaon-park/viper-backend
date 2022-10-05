@@ -2,6 +2,7 @@ package com.maple.viper.dto.response
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import lombok.Builder
+import java.time.LocalDate
 
 @Builder
 data class ExpResponse(
@@ -13,4 +14,6 @@ data class ExpResponse(
     val expPercentForNextLev: Double,
     @JsonProperty("exp_percent_for_target_lev")
     val expPercentForTargetLev: Double,
+    @JsonProperty("date")
+    val date: LocalDate,
 )

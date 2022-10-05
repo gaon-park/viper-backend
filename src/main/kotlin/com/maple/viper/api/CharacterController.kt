@@ -2,7 +2,6 @@ package com.maple.viper.api
 
 import com.maple.viper.dto.request.HistoryRequest
 import com.maple.viper.dto.response.CharacterInfoResponse
-import com.maple.viper.dto.response.ExpResponse
 import com.maple.viper.service.HistoryService
 import com.maple.viper.service.TCharacterService
 import org.springframework.http.ResponseEntity
@@ -23,15 +22,30 @@ class CharacterController(
     fun getCharacterInfo(@RequestParam userId: Long): ResponseEntity<CharacterInfoResponse> =
         ResponseEntity.ok(tCharacterService.getCharacterInfo(userId))
 
-    @GetMapping("/history/exp")
-    fun historyExp(@Valid @RequestBody request: HistoryRequest): ResponseEntity<List<ExpResponse>> {
-        return ResponseEntity.ok(
-            historyService.getExpHistory(
-                request.userId,
-                request.startDate,
-                request.endDate,
-                request.targetLev
-            )
+    @GetMapping("/history")
+    fun historyExp(@Valid @RequestBody request: HistoryRequest): ResponseEntity<Map<String, Any>> {
+        val map = mutableMapOf<String, Any>()
+        map["expHistory"] = historyService.getExpHistory(
+            request.userId,
+            request.startDate,
+            request.endDate,
+            request.targetLev
         )
+        map["worldRankHistory"] = historyService.getWorldRankHistory(
+            request.userId,
+            request.startDate,
+            request.endDate,
+        )
+        map["totalRankHistory"] = historyService.getTotalRankHistory(
+            request.userId,
+            request.startDate,
+            request.endDate,
+        )
+        map["popHistory"] = historyService.getPopHistory(
+            request.userId,
+            request.startDate,
+            request.endDate,
+        )
+        return ResponseEntity.ok(map)
     }
 }
