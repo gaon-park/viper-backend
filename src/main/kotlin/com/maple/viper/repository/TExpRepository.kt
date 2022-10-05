@@ -11,4 +11,5 @@ interface TExpRepository : JpaRepository<TExp, Long> {
     @Transactional
     fun deleteByCreatedAt(createdAt: LocalDate)
     fun findFirstByCharacterIdOrderByCreatedAtDesc(characterId: Long): TExp?
+    fun findByCharacterIdAndCreatedAtBetween(characterId: Long, start: LocalDate, end: LocalDate): List<TExp>
 }
