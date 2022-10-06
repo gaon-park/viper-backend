@@ -11,6 +11,7 @@ import com.maple.viper.repository.TExpRepository
 import com.maple.viper.repository.TPopRepository
 import com.maple.viper.repository.TTotalRankRepository
 import com.maple.viper.repository.TWorldRankRepository
+import com.maple.viper.util.ExpUtil
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -46,29 +47,22 @@ class HistoryService(
         val tExps = tExpRepository.findByCharacterIdAndCreatedAtBetween(
             characterId = characterId, start = startDate ?: DEFAULT_START_DATE, end = endDate ?: DEFAULT_END_DATE
         )
-        val accumulateExpForTargetLev = getAccumulateExp(targetLev ?: LEV_MAX)
+        val expUtil = ExpUtil(mstService)
+        val accumulateExpForTargetLev = expUtil.getAccumulateExp(targetLev ?: LEV_MAX)
         return tExps.map {
-            val accumulateExp = getAccumulateExp(it.lev) + it.exp
+            val accumulateExp = expUtil.getAccumulateExp(it.lev) + it.exp
             val percentForNextLev = (it.exp.toDouble() / (mstService.expMst[it.lev + 1]?.exp
                 ?: throw ViperException("invalid data"))) * HUNDRED
             val percentForTargetLev = (accumulateExp / accumulateExpForTargetLev) * HUNDRED
             ExpResponse(
                 lev = it.lev,
                 exp = it.exp,
+                targetLev = targetLev ?: LEV_MAX,
                 expPercentForNextLev = percentForNextLev,
                 expPercentForTargetLev = percentForTargetLev,
                 date = it.createdAt
             )
         }
-    }
-
-    /**
-     * targetLev 까지의 누적 경험치 계산
-     */
-    fun getAccumulateExp(targetLev: Int): Double {
-        var result: Double = (0).toDouble()
-        mstService.expMst.values.filter { it.targetLev <= targetLev }.forEach { result += it.exp }
-        return result
     }
 
     /**
