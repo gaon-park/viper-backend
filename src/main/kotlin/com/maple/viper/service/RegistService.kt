@@ -10,7 +10,6 @@ import com.maple.viper.entity.TUser
 import com.maple.viper.entity.TWorldRank
 import com.maple.viper.exception.AlreadyExistException
 import com.maple.viper.exception.ViperException
-import com.maple.viper.form.UserRegistForm
 import com.maple.viper.repository.TAvatarImgUrlRepository
 import com.maple.viper.repository.TCharacterRepository
 import com.maple.viper.repository.TExpRepository
@@ -44,19 +43,11 @@ class RegistService(
      * 대표캐릭터 정보 검색에 실패, DB에 등록하지 못했을 경우 false
      */
     @Transactional
-    fun insert(form: UserRegistForm): Boolean {
-        if (tUserRepository.findByEmail(form.email) != null) {
-            throw AlreadyExistException("already exist")
-        }
-        return insertCharacterInfo(tUserRepository.save(TUser.generateInsertModel(form, passwordEncoder)))
-    }
-
-    @Transactional
     fun insert(request: UserRegistRequest): Boolean {
         if (tUserRepository.findByEmail(request.email) != null) {
             throw AlreadyExistException("already exist email [${request.email}]")
         }
-        return insertCharacterInfo(tUserRepository.save(TUser.generateInsertModel(request, passwordEncoder)))
+        return upsertCharacterInfo(tUserRepository.save(TUser.generateInsertModel(request, passwordEncoder)))
     }
 
     /**
@@ -64,7 +55,7 @@ class RegistService(
      * 대표캐릭터 정보 검색에 실패, DB에 등록하지 못했을 경우 false
      */
     @Transactional
-    fun insertCharacterInfo(tUser: TUser): Boolean {
+    fun upsertCharacterInfo(tUser: TUser): Boolean {
         val characterInfo = JsonUtil().getDataFromNexonJson(SoapUtil().getCharacterInfoByAccountID(tUser.accountId))
         if (characterInfo.characterName.isNotEmpty()) {
             val tCharacter = TCharacter.generateInsertModel(
