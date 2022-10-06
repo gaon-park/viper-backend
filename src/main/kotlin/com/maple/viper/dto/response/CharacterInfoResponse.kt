@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor
 @AllArgsConstructor
 @Suppress("LongParameterList")
 data class CharacterInfoResponse(
-    @JsonProperty("avatarImgUrl")
+    @JsonProperty("avatar_img_url")
     val avatarImgURL: String,
-    @JsonProperty("worldName")
+    @JsonProperty("world_name")
     val worldName: String,
-    @JsonProperty("characterName")
+    @JsonProperty("character_name")
     val characterName: String,
     @JsonProperty("lev")
     val lev: Int,
@@ -24,13 +24,13 @@ data class CharacterInfoResponse(
     val exp: Long,
     @JsonProperty("job")
     val job: String,
-    @JsonProperty("jobDetail")
+    @JsonProperty("job_detail")
     val jobDetail: String,
     @JsonProperty("pop")
     val pop: Int,
-    @JsonProperty("totRank")
+    @JsonProperty("total_rank")
     val totRank: Long,
-    @JsonProperty("worldRank")
+    @JsonProperty("world_rank")
     val worldRank: Long,
 ) {
     companion object {

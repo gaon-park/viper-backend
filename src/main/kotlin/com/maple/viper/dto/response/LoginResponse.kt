@@ -7,7 +7,7 @@ import lombok.Builder
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class LoginResponse(
-    @JsonProperty("jwtToken")
+    @JsonProperty("jwt_token")
     val jwtToken: String?,
     @JsonProperty("message")
     val message: String?,

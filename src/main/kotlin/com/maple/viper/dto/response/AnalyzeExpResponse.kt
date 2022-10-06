@@ -1,17 +1,26 @@
 package com.maple.viper.dto.response
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import lombok.Builder
+import java.math.BigDecimal
 import java.time.LocalDate
 
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class AnalyzeExpResponse(
-    @JsonProperty("completionDate")
-    val completionDate: LocalDate?,
-    @JsonProperty("error")
-    val error: Boolean?,
-    @JsonProperty("message")
-    val message: String?,
+    @JsonProperty("total_duration")
+    val totalDuration: Int,
+    @JsonProperty("avg_exp")
+    val avgExp: BigDecimal,
+    @JsonProperty("avg_exp_percent")
+    val avgExpPercent: BigDecimal,
+    @JsonProperty("target_lev")
+    val targetLev: Int,
+    @JsonProperty("remain_exp_for_target_lev")
+    val remainExpForTargetLev: BigDecimal,
+    @JsonProperty("remain_days_for_target_lev")
+    val remainDaysForTargetLev: BigDecimal,
+    @JsonProperty("exp_percent_for_target_lev")
+    val expPercentForTargetLev: BigDecimal,
+    @JsonProperty("completion_date")
+    val completionDate: LocalDate,
 )
