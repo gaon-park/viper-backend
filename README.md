@@ -4,7 +4,7 @@
 - 고객센터 문의 결과 상업적 목적의 사용이 허가되지 않은 api였기 때문에 **상용화 금지!**
 
 # 목차
-1. [기술 스택](https://github.com/gaon-park/viper-backend/edit/master/README.md#%EA%B8%B0%EC%88%A0-%EC%8A%A4%ED%83%9D)
+1. [기술 스택](https://github.com/gaon-park/viper-backend/blob/master/README.md#%EA%B8%B0%EC%88%A0-%EC%8A%A4%ED%83%9D)
 2. [블로그 기록](https://github.com/gaon-park/viper-backend/blob/master/README.md#%EB%B8%94%EB%A1%9C%EA%B7%B8-%EA%B8%B0%EB%A1%9D)
 3. [REST API](https://github.com/gaon-park/viper-backend/blob/master/README.md#rest-api)
     1. [유저 신규 등록 API](https://github.com/gaon-park/viper-backend/blob/master/README.md#%EC%9C%A0%EC%A0%80-%EC%8B%A0%EA%B7%9C-%EB%93%B1%EB%A1%9D-api)
