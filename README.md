@@ -3,6 +3,42 @@
 - 메이플스토리 SOAP API를 사용한 대표캐릭터의 레벨업 예측기
 - 고객센터 문의 결과 상업적 목적의 사용이 허가되지 않은 api였기 때문에 **상용화 금지!**
 
+# 목차
+1. [기술 스택](https://github.com/gaon-park/viper-backend/edit/master/README.md#%EA%B8%B0%EC%88%A0-%EC%8A%A4%ED%83%9D)
+2. 블로그 기록
+3. REST API
+    1. 유저 신규 등록 API
+    2. 로그인 API
+    3. 캐릭터 정보 요청 API
+    4. 배치 수동 실행
+    5. 경험치 분석 API
+    6. 데이터 이력 API
+
+# 기술 스택
+<table>
+    <thead>
+        <tr>
+            <th>분류</th>
+            <th>기술</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Language</td>
+            <td>Kotlin</td>
+        </tr>
+        <tr>
+            <td>Framework</td>
+            <td>SpringBoot</td>
+        </tr>
+        <tr>
+            <td>DB</td>
+            <td>MySQL</td>
+        </tr>
+    </tbody>
+</table>
+
+
 # 블로그 기록
 
 1. **[메이플스토리 API를 이용하여 대표캐릭터 정보를 불러오는 API](https://ondol-diary.tistory.com/3)**
