@@ -84,7 +84,7 @@
 
 
 ### 로그인 API
-- `post: localhost:8080/login`
+- `post: /login`
 - 유효한 토큰을 발급
 <details>
 <summary>request</summary>
@@ -114,7 +114,7 @@
 </details>
 
 ### 캐릭터 정보 요청 API 
-- `get: localhost:8080/character?userId=1`
+- `get: /character?userId=1`
 
 <details>
 <summary>request</summary>
@@ -152,7 +152,7 @@
 </details>
 
 ### 배치 수동 실행
-- `put: localhost:8080/batch/data`
+- `put: /batch/data`
 - 캐릭터 정보 자동 수집 배치 프로그램 수동 실행 API
 - 실행 날짜로 수집된 데이터를 일괄 삭제하고 재수집
 
@@ -168,7 +168,7 @@ ok
 </details>
 
 ### 경험치 분석 API
-- `get: localhost:8080/analyze/exp`
+- `get: /analyze/exp`
 - 지정 기간동안 수집된 데이터를 바탕으로 경험치 상승폭을 분석
 - 지정 기간의 페이스로 사냥을 지속했을 때 목표 레벨에 도달할 수 있는 날짜를 예측
 
@@ -248,7 +248,7 @@ ok
 </details>
 
 ### 데이터 이력 API
-- `get: localhost:8080/character/history`
+- `get: /character/history`
 - 수집된 데이터 이력 요청 API
 
 <details>
